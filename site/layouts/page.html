@@ -1,13 +1,14 @@
 {{- /*
-  A single work, e.g. content/works/time-in-place.md -> /works/time-in-place/
+  A single work, e.g. content/works/time-in-place/index.md -> /works/time-in-place/
   Front matter values are read with .Params.<name>; the markdown body is .Content.
+  Images in the same folder are .Resources (see _partials/work-tile.html).
 */}}
 {{ define "main" }}
 <article class="work">
   <h2>{{ .Title }}</h2>
 
-  {{ with .Params.image }}
-    <img class="work-image" src="{{ . | relURL }}" alt="{{ $.Title }}">
+  {{ with .Resources.GetMatch "cover.*" }}
+    <img class="work-image" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ $.Title }}">
   {{ end }}
 
   <div class="work-text">

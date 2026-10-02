@@ -1,8 +1,6 @@
 ---
 title: "Time in Place"
 weight: 4
-thumbnail: "images/thumbs/timeinplace-thumb.png"
-image: "images/full/timeinplace.png"
 link: "/time-in-place.html"
 linkText: "Try it in your browser"
 ---

@@ -5,12 +5,7 @@
 {{ define "main" }}
 <ul class="grid">
   {{ range .Pages.ByWeight }}
-    <li>
-      <a href="{{ .RelPermalink }}">
-        <img src="{{ .Params.thumbnail | relURL }}" alt="{{ .Title }}">
-        <span class="grid-title">{{ .Title }}</span>
-      </a>
-    </li>
+    {{ partial "work-tile.html" . }}
   {{ end }}
 </ul>
 {{ end }}

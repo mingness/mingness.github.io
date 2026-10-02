@@ -1,0 +1,24 @@
+{{- /*
+  One grid tile for a work. Called with the work's page as context:
+    {{ partial "work-tile.html" . }}
+
+  Each work is a "page bundle": a folder holding index.md plus its images.
+  Those images are the page's .Resources, which we can look up by name.
+  - thumb.*  : a hand-cropped thumbnail (optional)
+  - cover.*  : the main image; if there's no thumb, Hugo crops one from this
+*/ -}}
+{{ $thumb := .Resources.GetMatch "thumb.*" }}
+{{ if not $thumb }}
+  {{ with .Resources.GetMatch "cover.*" }}
+    {{/* Fill crops to exactly this size. 450px is shown at 225px, so it stays sharp on high-res screens. */}}
+    {{ $thumb = .Fill "450x450" }}
+  {{ end }}
+{{ end }}
+<li>
+  <a href="{{ .RelPermalink }}">
+    {{ with $thumb }}
+      <img src="{{ .RelPermalink }}" alt="{{ $.Title }}">
+    {{ end }}
+    <span class="grid-title">{{ .Title }}</span>
+  </a>
+</li>
