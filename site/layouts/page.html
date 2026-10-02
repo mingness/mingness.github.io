@@ -1,0 +1,24 @@
+{{- /*
+  A single work, e.g. content/works/time-in-place.md -> /works/time-in-place/
+  Front matter values are read with .Params.<name>; the markdown body is .Content.
+*/}}
+{{ define "main" }}
+<article class="work">
+  <h2>{{ .Title }}</h2>
+
+  {{ with .Params.image }}
+    <img class="work-image" src="{{ . | relURL }}" alt="{{ $.Title }}">
+  {{ end }}
+
+  <div class="work-text">
+    {{ .Content }}
+  </div>
+
+  {{/* "with" only renders its contents if the value exists, so works without a link show nothing. */}}
+  {{ with .Params.link }}
+    <p><a class="button" href="{{ . }}">{{ or $.Params.linkText "See more" }}</a></p>
+  {{ end }}
+
+  <p><a href="{{ "/" | relURL }}">&larr; All works</a></p>
+</article>
+{{ end }}

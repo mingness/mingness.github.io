@@ -1,0 +1,27 @@
+# Site-wide settings. Anything under [params] is available in templates
+# as .Site.Params.<name>, e.g. {{ .Site.Params.subtitle }}.
+baseURL = "https://mingness.github.io/"
+locale = "en-us"
+title = "Claudine Chen"
+
+# We don't use tags or categories, so don't generate pages for them.
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  subtitle = "Works"
+  description = "Claudine Chen - Works"
+  vimeo = "https://vimeo.com/mingness"
+  instagram = "https://instagram.com/mingness"
+
+# "Mounts" tell Hugo to treat other folders as if they were inside this project.
+# The images already live in ../images (used by the currently published site),
+# so rather than copy them we mount that folder as static/images.
+# Note: once you declare any static mount you must also list the default
+# "static" folder yourself, or Hugo will stop using it.
+[module]
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+  [[module.mounts]]
+    source = "../images"
+    target = "static/images"

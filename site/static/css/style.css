@@ -1,0 +1,71 @@
+/* Everything in static/ is copied to the site as-is, so this file is served at /css/style.css */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #f9f9f9;
+  color: #333;
+  font-family: 'Lato', Calibri, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+}
+
+a { color: #555; text-decoration: none; }
+
+/* ---------- Header ---------- */
+.site-header { text-align: center; padding: 60px 16px 30px; }
+.site-header h1 { margin: 0; font-size: 34px; font-weight: 700; }
+.site-header h1 a { color: #333; }
+.site-header h1 span { display: block; font-size: 20px; font-weight: 300; }
+.social { margin-top: 12px; display: flex; gap: 12px; justify-content: center; }
+
+main { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+
+/* ---------- The grid ---------- */
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0;
+  display: grid;
+  /* As many 225px columns as fit, centred */
+  grid-template-columns: repeat(auto-fill, 225px);
+  justify-content: center;
+  gap: 10px;
+}
+.grid a { display: block; position: relative; }
+.grid img { display: block; width: 225px; height: 225px; object-fit: cover; }
+
+/* Title fades in over the thumbnail on hover */
+.grid-title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-weight: 400;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.grid a:hover .grid-title,
+.grid a:focus .grid-title { opacity: 1; }
+
+/* ---------- Single work page ---------- */
+.work { max-width: 800px; margin: 0 auto; padding-bottom: 40px; }
+.work h2 { font-weight: 400; font-size: 26px; }
+.work-image { display: block; width: 100%; height: auto; }
+.work-text { line-height: 1.6; }
+.button {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #333;
+  color: #fff;
+}
+.button:hover { background: #555; }
+
+/* ---------- Footer ---------- */
+.site-footer { text-align: center; padding: 40px 16px; font-size: 13px; }

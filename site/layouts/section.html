@@ -1,0 +1,16 @@
+{{- /*
+  Used for section pages like /works/. We just reuse the home page grid
+  so /works/ doesn't show a blank page.
+*/}}
+{{ define "main" }}
+<ul class="grid">
+  {{ range .Pages.ByWeight }}
+    <li>
+      <a href="{{ .RelPermalink }}">
+        <img src="{{ .Params.thumbnail | relURL }}" alt="{{ .Title }}">
+        <span class="grid-title">{{ .Title }}</span>
+      </a>
+    </li>
+  {{ end }}
+</ul>
+{{ end }}
