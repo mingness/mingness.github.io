@@ -19,6 +19,10 @@
     {{ with $thumb }}
       <img src="{{ .RelPermalink }}" alt="{{ $.Title }}">
     {{ end }}
-    <span class="tile-title">{{ .Title }}</span>
+    <span class="tile-title">{{ .Title }}
+      {{ if .Description }}
+        <br>{{ .Description }}
+      {{ end }}
+    </span>
   </a>
 </li>

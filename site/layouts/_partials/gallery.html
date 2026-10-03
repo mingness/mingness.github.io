@@ -1,5 +1,5 @@
 {{- /*
-  A photo gallery for a work: thumbnails of every image in the bundle's gallery/ folder.
+  A photo gallery for a work: thumbnails of images in the bundle's gallery/ folder.
   Clicking one opens PhotoSwipe (https://photoswipe.com), a popup viewer with
   previous/next buttons, keyboard arrows, swipe and pinch-zoom on phones.
   Without JavaScript the thumbnails are still plain links to the large images.
@@ -7,9 +7,40 @@
   Called from works/page.html with the page as context:
     {{ partial "gallery.html" . }}
 
-  Images are shown in filename order, so prefix them (01-..., 02-...) to set the order.
+  Which images, in what order, and their captions come from a "gallery" list in the page's front matter:
+
+    gallery:
+      - src: street_reflection.jpg     # file name inside gallery/ (required)
+        title: Street reflection       # shown in the popup caption
+        description: Charcoal and ink. # shown in the popup caption
+
+  Only the images in the list are shown, in list order. Everything except src is optional.
+  Without a "gallery" list, every image in gallery/ is shown in filename order, with no captions.
 */ -}}
-{{ with .Resources.Match "gallery/*" }}
+
+{{/* Gather the images as a list of dicts: { img, title, year, description } */}}
+{{ $images := slice }}
+{{ with .Params.gallery }}
+  {{ range . }}
+    {{/* Inside "with" below, the dot becomes the image, so keep the front matter entry as $entry */}}
+    {{ $entry := . }}
+    {{ with $.Resources.GetMatch (printf "gallery/%s" $entry.src) }}
+      {{ $images = $images | append (dict
+          "img" .
+          "title" ($entry.title | default "")
+          "description" ($entry.description | default "")
+        ) }}
+    {{ else }}
+      {{ warnf "%s: gallery image %q not found in gallery/" $.File.Path $entry.src }}
+    {{ end }}
+  {{ end }}
+{{ else }}
+  {{ range .Resources.Match "gallery/*" }}
+    {{ $images = $images | append (dict "img" . "title" "" "year" "" "description" "") }}
+  {{ end }}
+{{ end }}
+
+{{ with $images }}
   <section>
     <h3>Gallery</h3>
     <div class="gallery">
@@ -20,13 +51,20 @@
           - thumb: cropped to a 300x300 square, shown at 150px so it's sharp on high-res screens
           PhotoSwipe needs the large image's size up front, hence data-pswp-width/height.
         */}}
-        {{ $large := .Fit "2000x2000" }}
-        {{ $thumb := .Fill "300x300" }}
+        {{ $large := .img.Fit "2000x2000" }}
+        {{ $thumb := .img.Fill "300x300" }}
         <a href="{{ $large.RelPermalink }}"
            data-pswp-width="{{ $large.Width }}"
            data-pswp-height="{{ $large.Height }}"
            target="_blank">
-          <img src="{{ $thumb.RelPermalink }}" width="150" height="150" alt="{{ $.Title }}" loading="lazy">
+          <img src="{{ $thumb.RelPermalink }}" width="150" height="150" alt="{{ .title | default $.Title }}" loading="lazy">
+          {{/* Hidden on the page; the script below copies it into the popup for the current photo */}}
+          {{ if or .title .year .description }}
+            <span class="pswp-caption-content" hidden>
+              {{ with .title }}<strong>{{ . }}</strong>{{ end }}
+              {{ with .description }}<span class="pswp-caption-description">{{ . }}</span>{{ end }}
+            </span>
+          {{ end }}
         </a>
       {{ end }}
     </div>
@@ -43,6 +81,25 @@
       // The main viewer code is only downloaded when a photo is first clicked
       pswpModule: () => import('{{ "js/photoswipe/photoswipe.esm.min.js" | relURL }}'),
     });
+
+    // PhotoSwipe has no captions built in, so add a caption element to the popup
+    // and fill it from the hidden .pswp-caption-content of whichever photo is showing.
+    lightbox.on('uiRegister', () => {
+      lightbox.pswp.ui.registerElement({
+        name: 'caption',
+        order: 9,
+        isButton: false,
+        appendTo: 'root',
+        onInit: (el, pswp) => {
+          pswp.on('change', () => {
+            const caption = pswp.currSlide.data.element?.querySelector('.pswp-caption-content');
+            el.innerHTML = caption ? caption.innerHTML : '';
+            el.hidden = !caption;
+          });
+        },
+      });
+    });
+
     lightbox.init();
   </script>
 {{ end }}

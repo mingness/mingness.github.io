@@ -125,6 +125,7 @@ main {
   background: rgb(0 0 0 / 55%);
   color: #fff;
   font-weight: 400;
+  font-size: 20px;
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -176,6 +177,39 @@ main {
 }
 .gallery img { width: 150px; height: 150px; object-fit: cover; }
 .gallery a:hover img { opacity: 0.8; }
+
+/* The year sits over the bottom of the thumbnail and appears on mouse over.
+   position: relative on the link makes the absolutely positioned year sit inside it. */
+.gallery a { position: relative; }
+.gallery-year {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.gallery a:hover .gallery-year,
+.gallery a:focus-visible .gallery-year { opacity: 1; }
+
+/* Caption in the popup viewer, added by the script in _partials/gallery.html */
+.pswp__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px var(--gutter);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+.pswp__caption strong { font-weight: 400; margin-right: 8px; }
+.pswp__caption .pswp-caption-description { display: block; margin-top: 4px; }
 
 /* ---------- About page ---------- */
 
