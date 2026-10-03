@@ -9,11 +9,8 @@ on:
   # Also allow running it by hand from the Actions tab
   workflow_dispatch:
 
-# Permissions the deploy step needs
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 # Only one deployment at a time; don't cancel one that's already running
 concurrency:
