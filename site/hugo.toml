@@ -8,7 +8,12 @@ title = "Claudine Chen"
 disableKinds = ["taxonomy", "term"]
 
 [params]
-  subtitle = "Works"
   description = "Claudine Chen - Works"
-  vimeo = "https://vimeo.com/mingness"
-  instagram = "https://instagram.com/mingness"
+
+# The header menu. Add another [[menus.main]] block for each new link;
+# weight sets the order (lower comes first).
+[menus]
+  [[menus.main]]
+    name = "About"
+    pageRef = "/about"
+    weight = 10

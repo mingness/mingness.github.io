@@ -1,0 +1,49 @@
+{{- /*
+  The about page (content/about/index.md), chosen by "layout: about" in its front matter.
+  Three parts: the statement (the markdown body), then social links and
+  exhibitions (both lists in the front matter, read with .Params).
+*/}}
+{{ define "main" }}
+<article class="page">
+  <h2>{{ .Title }}</h2>
+
+  <div class="page-text">
+    {{ .Content }}
+  </div>
+
+  {{ with .Params.social }}
+    <section>
+      <h3>Links</h3>
+        <ul class="social">
+          {{ range . }}
+            <li><a href="{{ .url }}">{{ .name }}</a></li>
+          {{ end }}
+        </ul>
+    </section>
+  {{ end }}
+
+  {{ with .Params.exhibitions }}
+    <section>
+      <h3>Exhibitions</h3>
+      <ul class="exhibitions">
+        {{ range . }}
+          <li>
+            <span class="exhibition-year">{{ .year }}</span>
+            <span>
+              {{ .title }}, {{ .venue }}
+              {{/* Link to the work's page. If the folder name is wrong, stop the build with an error rather than silently drop the link. */}}
+              {{ with .work }}
+                {{ with site.GetPage (printf "/works/%s" .) }}
+                  &mdash; <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                {{ else }}
+                  {{ errorf "about page: no work found at content/works/%s" . }}
+                {{ end }}
+              {{ end }}
+            </span>
+          </li>
+        {{ end }}
+      </ul>
+    </section>
+  {{ end }}
+</article>
+{{ end }}

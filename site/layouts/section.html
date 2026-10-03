@@ -3,9 +3,5 @@
   so /works/ doesn't show a blank page.
 */}}
 {{ define "main" }}
-<ul class="grid">
-  {{ range .Pages.ByWeight }}
-    {{ partial "work-tile.html" . }}
-  {{ end }}
-</ul>
+  {{ partial "works-grid.html" .Pages.ByWeight }}
 {{ end }}

@@ -1,0 +1,9 @@
+{{- /*
+  The grid of work thumbnails. Called with a list of pages:
+    {{ partial "works-grid.html" .Pages.ByWeight }}
+*/ -}}
+<ul class="works-grid">
+  {{ range . }}
+    {{ partial "work-tile.html" . }}
+  {{ end }}
+</ul>

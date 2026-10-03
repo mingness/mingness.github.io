@@ -1,12 +1,8 @@
 {{- /*
   The home page: a grid of thumbnails, one per page in content/works/.
-  Each tile links to that work's own page (rendered by page.html).
+  Each tile links to that work's own page (rendered by works/page.html).
 */}}
 {{ define "main" }}
-<ul class="grid">
   {{/* .ByWeight sorts by the "weight" front matter: 1 first, then 2, ... */}}
-  {{ range (where site.RegularPages "Section" "works").ByWeight }}
-    {{ partial "work-tile.html" . }}
-  {{ end }}
-</ul>
+  {{ partial "works-grid.html" (where site.RegularPages "Section" "works").ByWeight }}
 {{ end }}
