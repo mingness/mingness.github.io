@@ -10,8 +10,8 @@
 {{ $thumb := .Resources.GetMatch "thumb.*" }}
 {{ if not $thumb }}
   {{ with .Resources.GetMatch "cover.*" }}
-    {{/* Fill crops to exactly this size. 450px is shown at 225px, so it stays sharp on high-res screens. */}}
-    {{ $thumb = .Fill "450x450" }}
+    {{/* Fill crops to exactly this size. Tiles are shown at up to ~315px, so 640px stays sharp on high-res screens. */}}
+    {{ $thumb = .Fill "640x640" }}
   {{ end }}
 {{ end }}
 <li>
