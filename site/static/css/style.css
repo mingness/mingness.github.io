@@ -151,6 +151,18 @@ main { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
 }
 .button:hover { background: var(--color-muted); text-decoration: none; }
 
+/* ---------- Gallery thumbnails on a work page ----------
+   The popup itself is styled by static/js/photoswipe/photoswipe.css */
+
+/* A row of 150px thumbnails that wraps onto more rows as needed */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.gallery img { width: 150px; height: 150px; object-fit: cover; }
+.gallery a:hover img { opacity: 0.8; }
+
 /* ---------- About page ---------- */
 
 /* Social links in a row that wraps (Tailwind: flex flex-wrap gap-x-5 gap-y-2 my-6) */

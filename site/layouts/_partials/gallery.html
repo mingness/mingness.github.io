@@ -1,0 +1,48 @@
+{{- /*
+  A photo gallery for a work: thumbnails of every image in the bundle's gallery/ folder.
+  Clicking one opens PhotoSwipe (https://photoswipe.com), a popup viewer with
+  previous/next buttons, keyboard arrows, swipe and pinch-zoom on phones.
+  Without JavaScript the thumbnails are still plain links to the large images.
+
+  Called from works/page.html with the page as context:
+    {{ partial "gallery.html" . }}
+
+  Images are shown in filename order, so prefix them (01-..., 02-...) to set the order.
+*/ -}}
+{{ with .Resources.Match "gallery/*" }}
+  <section>
+    <h3>Gallery</h3>
+    <div class="gallery">
+      {{ range . }}
+        {{/*
+          Hugo makes two smaller copies of each photo at build time:
+          - large: fits within 2000x2000, for the popup (the originals can be several MB)
+          - thumb: cropped to a 300x300 square, shown at 150px so it's sharp on high-res screens
+          PhotoSwipe needs the large image's size up front, hence data-pswp-width/height.
+        */}}
+        {{ $large := .Fit "2000x2000" }}
+        {{ $thumb := .Fill "300x300" }}
+        <a href="{{ $large.RelPermalink }}"
+           data-pswp-width="{{ $large.Width }}"
+           data-pswp-height="{{ $large.Height }}"
+           target="_blank">
+          <img src="{{ $thumb.RelPermalink }}" width="150" height="150" alt="{{ $.Title }}" loading="lazy">
+        </a>
+      {{ end }}
+    </div>
+  </section>
+
+  {{/* PhotoSwipe's files are in static/js/photoswipe/. They're only loaded on pages that have a gallery. */}}
+  <link rel="stylesheet" href="{{ "js/photoswipe/photoswipe.css" | relURL }}">
+  <script type="module">
+    import PhotoSwipeLightbox from '{{ "js/photoswipe/photoswipe-lightbox.esm.min.js" | relURL }}';
+
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: '.gallery',   // the element holding the thumbnails
+      children: 'a',         // each link inside it is one photo
+      // The main viewer code is only downloaded when a photo is first clicked
+      pswpModule: () => import('{{ "js/photoswipe/photoswipe.esm.min.js" | relURL }}'),
+    });
+    lightbox.init();
+  </script>
+{{ end }}

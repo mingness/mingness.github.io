@@ -21,5 +21,8 @@
     <p><a class="button" href="{{ . }}">{{ or $.Params.linkText "See more" }}</a></p>
   {{ end }}
 
+  {{/* Only shows anything if the work's folder has a gallery/ folder */}}
+  {{ partial "gallery.html" . }}
+
 </article>
 {{ end }}
