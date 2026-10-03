@@ -1,0 +1,60 @@
+# Build the Hugo site in site/ and deploy it to GitHub Pages.
+# Based on the workflow in the Hugo docs: https://gohugo.io/host-and-deploy/host-on-github-pages/
+name: Deploy Hugo site to Pages
+
+on:
+  # Run on every push to main
+  push:
+    branches: [main]
+  # Also allow running it by hand from the Actions tab
+  workflow_dispatch:
+
+# Permissions the deploy step needs
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time; don't cancel one that's already running
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Match the version you use locally (`hugo version`)
+      HUGO_VERSION: 0.165.0
+    steps:
+      - name: Install Hugo
+        run: |
+          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb
+          sudo dpkg -i ${{ runner.temp }}/hugo.deb
+
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build
+        working-directory: site
+        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./site/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
