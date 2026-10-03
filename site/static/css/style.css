@@ -14,6 +14,9 @@
   --color-ink: #333;
   --color-muted: #555;
   --color-paper: #f9f9f9;
+  /* Width shared by the header and main, so their left and right edges line up */
+  --content-width: 960px;
+  --gutter: 16px;
 }
 
 /* ---------- Basics ----------
@@ -36,8 +39,14 @@ body {
 a { color: var(--color-muted); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* Tailwind: mx-auto max-w-[1240px] px-4 */
-main { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
+/* Tailwind: mx-auto max-w-[1240px] px-4
+   max-width includes the side padding (box-sizing: border-box), so the content
+   itself is at most --content-width wide. The header uses the same values. */
+main {
+  max-width: calc(var(--content-width) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
 
 /* ---------- Header ---------- */
 
@@ -45,9 +54,9 @@ main { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
    A flex container lays its children (title, nav) out in a row.
    flex-wrap lets the nav drop to a new line when the row runs out of space. */
 .site-header {
-  max-width: 1240px;
+  max-width: calc(var(--content-width) + 2 * var(--gutter));  /* same as main */
   margin: 0 auto;
-  padding: 6px 20px 30px;
+  padding: 6px var(--gutter) 30px;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;   /* line up the text baselines of title and menu */
@@ -81,20 +90,25 @@ main { max-width: 1240px; margin: 0 auto; padding: 0 16px; }
 
 /* ---------- The grid of works ---------- */
 
-/* Tailwind: grid grid-cols-[repeat(auto-fill,225px)] justify-center gap-2.5 py-5 */
+/* Tailwind: grid grid-cols-2 sm:grid-cols-3 gap-2.5 py-5
+   1fr = one equal share of the free space, so the columns stretch to fill
+   the full width of main, and the tiles grow and shrink with the window. */
 .works-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 225px);  /* as many 225px columns as fit */
-  justify-content: center;                           /* centre those columns */
+  grid-template-columns: repeat(2, 1fr);   /* 2 columns on narrow screens */
   gap: 10px;
   padding: 20px 0;
+}
+@media (min-width: 640px) {
+  .works-grid { grid-template-columns: repeat(3, 1fr); }  /* never more than 3 */
 }
 
 /* Tailwind: group relative block */
 .works-grid a { display: block; position: relative; }
 
-/* Tailwind: size-[225px] object-cover */
-.works-grid img { width: 225px; height: 225px; object-fit: cover; }
+/* Tailwind: aspect-square w-full object-cover
+   Fill the column's width, and keep the tile square whatever that width is. */
+.works-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; }
 
 /* Tailwind: absolute inset-0 flex items-center justify-center bg-black/55 p-2.5 text-center
              font-normal text-white opacity-0 transition-opacity duration-200
