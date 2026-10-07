@@ -1,7 +1,7 @@
 ---
 title: "NCAD: Drawing and Visual Investigation"
-weight: 1
-description: 2022
+date: 2022-09-01
+description: (2022-2023)
 gallery:
   - src: persian_cuisine.jpg
     title: Pomegranates and walnuts

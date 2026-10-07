@@ -1,6 +1,6 @@
 {{- /*
   The grid of work thumbnails. Called with a list of pages:
-    {{ partial "works-grid.html" .Pages.ByWeight }}
+    {{ partial "works-grid.html" .Pages.ByDate.Reverse }}
 */ -}}
 <ul class="works-grid">
   {{ range . }}
