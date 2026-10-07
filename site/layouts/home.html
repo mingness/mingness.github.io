@@ -3,6 +3,6 @@
   Each tile links to that work's own page (rendered by works/page.html).
 */}}
 {{ define "main" }}
-  {{/* .ByWeight sorts by the "weight" front matter: 1 first, then 2, ... */}}
-  {{ partial "works-grid.html" (where site.RegularPages "Section" "works").ByWeight }}
+  {{/* .ByDate.Reverse sorts by the "date" front matter, newest first */}}
+  {{ partial "works-grid.html" (where site.RegularPages "Section" "works").ByDate.Reverse }}
 {{ end }}

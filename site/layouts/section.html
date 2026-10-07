@@ -3,5 +3,5 @@
   so /works/ doesn't show a blank page.
 */}}
 {{ define "main" }}
-  {{ partial "works-grid.html" .Pages.ByWeight }}
+  {{ partial "works-grid.html" .Pages.ByDate.Reverse }}
 {{ end }}
