@@ -11,6 +11,7 @@
 
     gallery:
       - src: street_reflection.jpg     # file name inside gallery/ (required)
+        anchor: Top                    # where to crop the thumbnail (optional, default from hugo.toml)
         title: Street reflection       # shown in the popup caption
         description: Charcoal and ink. # shown in the popup caption
 
@@ -29,6 +30,7 @@
           "img" .
           "title" ($entry.title | default "")
           "description" ($entry.description | default "")
+          "anchor" ($entry.anchor | default "")
         ) }}
     {{ else }}
       {{ warnf "%s: gallery image %q not found in gallery/" $.File.Path $entry.src }}
@@ -52,7 +54,7 @@
           PhotoSwipe needs the large image's size up front, hence data-pswp-width/height.
         */}}
         {{ $large := .img.Fit "2000x2000" }}
-        {{ $thumb := .img.Fill "300x300" }}
+        {{ $thumb := .img.Fill (trim (printf "300x300 %s" .anchor) " ") }}
         <a href="{{ $large.RelPermalink }}"
            data-pswp-width="{{ $large.Width }}"
            data-pswp-height="{{ $large.Height }}"

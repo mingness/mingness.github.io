@@ -7,6 +7,12 @@ title = "Claudine Chen"
 # We don't use tags or categories, so don't generate pages for them.
 disableKinds = ["taxonomy", "term"]
 
+# How Hugo crops images when a template uses .Fill (gallery and grid thumbnails).
+# Without this Hugo uses "Smart", which guesses the interesting part of each image.
+# Options: Center, Smart, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight.
+[imaging]
+  anchor = "Center"
+
 [params]
   description = "Claudine Chen - Works"
 

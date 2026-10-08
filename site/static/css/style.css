@@ -205,7 +205,7 @@ main {
   padding: 12px var(--gutter);
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
-  font-size: 14px;
+  font-size: 18px;
   text-align: center;
 }
 .pswp__caption strong { font-weight: 400; margin-right: 8px; }
