@@ -157,6 +157,10 @@ main {
 /* Tailwind: h-auto w-full */
 .cover { width: 100%; height: auto; }
 
+/* A p5 sketch's canvas (layouts/sketches/page.html). p5 makes it an inline element,
+   like a word in a sentence; as a block, margin auto centres it when it's narrower than the column. */
+#sketch-holder canvas { display: block; margin: 0 auto; }
+
 /* Tailwind: inline-block bg-ink px-4 py-2 text-white hover:bg-muted */
 .button {
   display: inline-block;
