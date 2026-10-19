@@ -32,6 +32,17 @@
   {{/* Need this, or Hugo won't include the sketch file */}}
   {{ with .Resources.GetMatch .Params.sketch }}
     <script defer src="{{ .RelPermalink }}"></script>
+    {{/*
+      The sketch file only defines sketch(p, base); this starts it.
+      "defer" doesn't work on inline scripts, so wait for DOMContentLoaded,
+      which fires after the deferred p5 and sketch files have run.
+    */}}
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const holder = document.getElementById("sketch-holder");
+        new p5(p => sketch(p, holder.dataset.base), holder);
+      });
+    </script>
   {{ else }}
     {{ warnf "%s: sketch file %q not found in bundle" $.File.Path $.Params.sketch }}
   {{ end }}
