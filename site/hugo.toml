@@ -16,6 +16,9 @@ disableKinds = ["taxonomy", "term"]
 [params]
   description = "Claudine Chen - Works"
 
+[security]
+  allowContent = ["text/html", "text/markdown"]
+
 # The header menu. Add another [[menus.main]] block for each new link;
 # weight sets the order (lower comes first).
 [menus]
