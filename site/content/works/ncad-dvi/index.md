@@ -11,7 +11,7 @@ gallery:
     title: obsessive circles
   - src: collage.jpg
     title: playing with collage
-  - src: claudine_whisper_ramp.jpg
+  - src: claudine_whisper_ramp.gif
     title: waves animation
   - src: street_reflection.jpg
     title: Street reflection
