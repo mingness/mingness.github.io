@@ -1,0 +1,40 @@
+{{- /*
+  A single sketch (Hugo uses layouts/sketches/ for pages in content/sketches/), e.g. content/sketches/time-in-place/index.md -> /sketches/time-in-place/
+  Front matter values are read with .Params.<name>; the markdown body is .Content.
+  Images in the same folder are .Resources (see _partials/work-tile.html).
+*/}}
+
+{{ define "head" }}
+  {{ range .Params.dependencies }}
+  <script defer src="{{ . }}"></script>
+  {{ end }}
+{{ end }}
+
+
+{{ define "main" }}
+<article class="page">
+  <p><a href="{{ "/sketches" | relURL }}">&larr; All sketches</a></p>
+  <h2>{{ .Title }}</h2>
+
+  <div class="page-text">
+    {{ .Content }}
+  </div>
+
+  {{/* If need custom html, include it in "custom.html" */}}
+  {{ with .Resources.GetMatch "custom.html" }}{{ .Content }}{{ end }}
+
+  {{/* the sketch's canvas goes in here. data-base tells the sketch where its assets/ folder is */}}
+  <div id="sketch-holder" data-base="{{ .RelPermalink }}"></div>
+
+  {{/* if using other files in sketch, put them in assets folder. */}}
+  {{ range .Resources.Match "assets/**" }}{{ .Publish }}{{ end }}
+
+  {{/* Need this, or Hugo won't include the sketch file */}}
+  {{ with .Resources.GetMatch .Params.sketch }}
+    <script defer src="{{ .RelPermalink }}"></script>
+  {{ else }}
+    {{ warnf "%s: sketch file %q not found in bundle" $.File.Path $.Params.sketch }}
+  {{ end }}
+
+</article>
+{{ end }}

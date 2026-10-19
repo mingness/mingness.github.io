@@ -12,6 +12,8 @@
   <meta name="description" content="{{ site.Params.description }}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Rubik+Marker+Hatch&display=swap">
   <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+
+  {{ block "head" . }}{{ end }}
 </head>
 <body>
   {{ partial "header.html" . }}
